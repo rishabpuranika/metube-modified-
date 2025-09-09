@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: metube
+    runtime: python3
+    buildCommand: "./build.sh"
+    startCommand: "python3 app/main.py"
+    plan: free
+    env: python
+    region: oregon
+    envVars:
+      - key: PORT
+        value: 8081
+      - key: HOST
+        value: 0.0.0.0
+      - key: DOWNLOAD_DIR
+        value: /tmp/downloads
+      - key: TEMP_DIR
+        value: /tmp
+      - key: STATE_DIR
+        value: /tmp
+      - key: BASE_DIR
+        value: /opt/render/project/src
+      - key: PYTHON_VERSION
+        value: "3.10"
