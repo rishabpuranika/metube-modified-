@@ -41,6 +41,23 @@ If Docker build fails, try this:
    python3 app/main.py
    ```
 
+## 🔧 Robust Startup (NEW!)
+
+The latest version includes a robust startup script (`railway_start.py`) that:
+- ✅ **Auto-detects missing config files** and creates fallbacks
+- ✅ **Handles environment setup** automatically  
+- ✅ **Prevents deployment crashes** from missing files
+- ✅ **Provides detailed logging** for troubleshooting
+
+### Updated Dockerfile
+
+The `Dockerfile.noui` now includes:
+```dockerfile
+# Robust startup with error handling
+COPY railway_start.py ./
+CMD ["python3", "railway_start.py"]
+```
+
 ## ⚙️ Environment Variables
 
 Set these in Railway dashboard under "Variables":
@@ -54,6 +71,15 @@ LOGLEVEL=INFO
 ```
 
 ## 🔧 Troubleshooting
+
+### Config File Errors (SOLVED!)
+
+✅ **Automatic handling**: The startup script now handles missing config files automatically!
+
+If you see "Config file not found" in logs:
+1. The script will automatically try alternatives
+2. Creates a minimal config as last resort  
+3. Check logs to see which config was used
 
 ### Build Fails with "aria2 banned"
 
@@ -71,10 +97,15 @@ Try different configs by changing `YTDL_OPTIONS_FILE`:
 
 1. `ytdl_config_android.json` (most compatible)
 2. `ytdl_config_render.json` (aggressive settings)
-3. Direct environment variable:
-   ```bash
-   YTDL_OPTIONS={"extractor_args":{"youtube":{"player_client":["android"]}},"format":"18/worst"}
-   ```
+3. `ytdl_config_cookies.json` (if you have cookies setup)
+4. The startup script will try these automatically if your specified file is missing!
+
+### Testing Your Setup
+
+Run the test script to verify everything is working:
+```bash
+python3 test_setup.py
+```
 
 ## 📊 Expected Results
 

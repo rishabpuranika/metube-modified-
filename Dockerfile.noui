@@ -13,7 +13,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application
 COPY app ./app
-COPY ytdl_config_android.json ./
+COPY ytdl_config*.json ./
+COPY cookies.txt ./
+COPY railway_start.py ./
 
 # Create a minimal static file structure for the UI
 RUN mkdir -p ui/dist/metube/browser && \
@@ -23,11 +25,21 @@ RUN mkdir -p ui/dist/metube/browser && \
 ENV PORT=8081
 ENV HOST=0.0.0.0
 ENV DOWNLOAD_DIR=/tmp/downloads
+ENV STATE_DIR=/tmp
+ENV TEMP_DIR=/tmp
+ENV BASE_DIR=/app
 ENV YTDL_OPTIONS_FILE=ytdl_config_android.json
 
 # Create directories
 RUN mkdir -p /tmp/downloads
 
+# Make startup script executable
+RUN chmod +x railway_start.py
+
+# Debug: List files and verify config
+RUN echo "Files in /app:" && ls -la /app/ && \
+    echo "Config files:" && ls -la /app/ytdl_config*.json
+
 EXPOSE 8081
 
-CMD ["python3", "app/main.py"]
+CMD ["python3", "railway_start.py"]
