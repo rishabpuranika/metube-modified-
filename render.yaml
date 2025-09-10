@@ -23,6 +23,6 @@ services:
       - key: PYTHON_VERSION
         value: "3.10"
       - key: YTDL_OPTIONS_FILE
-        value: "ytdl_config.json"
+        value: "ytdl_config_cookies.json"
       - key: LOGLEVEL
         value: "DEBUG"

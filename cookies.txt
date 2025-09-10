@@ -1,0 +1,15 @@
+# Netscape HTTP Cookie File
+# This is a generated file! Do not edit.
+
+# Replace this with actual YouTube cookies from your browser
+# Use a browser extension to export cookies from youtube.com
+# Example format:
+# .youtube.com	TRUE	/	FALSE	1735689600	CONSENT	PENDING+123
+# .youtube.com	TRUE	/	TRUE	1735689600	__Secure-YEC	abc123
+# .youtube.com	TRUE	/	FALSE	1735689600	VISITOR_INFO1_LIVE	def456
+
+# To get real cookies:
+# 1. Install "Export Cookies" extension in Chrome/Firefox
+# 2. Visit youtube.com and log in (optional, but helps)
+# 3. Export cookies for youtube.com domain
+# 4. Replace this file content with exported cookies
