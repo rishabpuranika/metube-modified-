@@ -4,19 +4,27 @@ This guide helps you deploy MeTube to Railway, which has better YouTube compatib
 
 ## 🚀 Quick Deploy (Recommended)
 
-### Method 1: Docker Build (Most Reliable)
+### Method 1: Minimal Docker Build (Most Reliable)
 
 1. **Push changes to GitHub** first:
    ```bash
    git add .
-   git commit -m "Railway deployment setup"
+   git commit -m "Railway deployment setup - removed aria2"
    git push origin main
    ```
 
 2. **Go to Railway**: https://railway.app
 3. **Connect GitHub** and select your repository
-4. **Railway will detect** the `railway.toml` and use Docker build
+4. **Railway will use** the `Dockerfile.minimal` (no aria2/ffmpeg)
 5. **Wait for deployment** (usually 3-5 minutes)
+
+### Method 1b: If Build Still Fails
+
+1. **In Railway Settings → Build**:
+   - Builder: Docker
+   - Dockerfile Path: `Dockerfile.minimal`
+2. **Or try even more basic**:
+   - Change `requirements.railway.txt` to `requirements.basic.txt` in Dockerfile.minimal
 
 ### Method 2: Nixpacks Build (Faster)
 
