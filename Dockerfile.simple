@@ -1,40 +1,38 @@
 FROM node:18-alpine as builder
 
 WORKDIR /metube
+COPY ui/package*.json ./
+RUN npm ci --only=production
 COPY ui ./
-RUN npm ci && \
-    node_modules/.bin/ng build --configuration production
+RUN npm run build
 
-FROM python:3.11-alpine
+FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install only the most essential dependencies
-RUN apk add --update curl && \
-    rm -rf /var/cache/apk/*
+# Install minimal system dependencies
+RUN apt-get update && \
+    apt-get install -y curl && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
 COPY requirements.railway.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy application
 COPY app ./app
 COPY --from=builder /metube/dist/metube ./ui/dist/metube
-COPY ytdl_config*.json ./
-COPY cookies.txt ./
+COPY ytdl_config_android.json ./
 
+# Environment variables
 ENV PORT=8081
 ENV HOST=0.0.0.0
 ENV DOWNLOAD_DIR=/tmp/downloads
-ENV STATE_DIR=/tmp
-ENV TEMP_DIR=/tmp
 ENV YTDL_OPTIONS_FILE=ytdl_config_android.json
 
-EXPOSE 8081
-
+# Create directories
 RUN mkdir -p /tmp/downloads
 
-# Add healthcheck
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8081/version || exit 1
+EXPOSE 8081
 
 CMD ["python3", "app/main.py"]

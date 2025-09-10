@@ -1,8 +1,3 @@
 [build]
 builder = "dockerfile"
-dockerfilePath = "Dockerfile.minimal"
-
-[deploy]
-healthcheckPath = "/version"
-healthcheckTimeout = 300
-restartPolicyType = "always"
+dockerfilePath = "Dockerfile.noui"
