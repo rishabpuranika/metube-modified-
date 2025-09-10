@@ -1,0 +1,18 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "python3 app/main.py"
+healthcheckPath = "/version"
+healthcheckTimeout = 300
+restartPolicyType = "always"
+
+[env]
+PORT = "8081"
+HOST = "0.0.0.0"
+DOWNLOAD_DIR = "/tmp/downloads"
+TEMP_DIR = "/tmp"  
+STATE_DIR = "/tmp"
+BASE_DIR = "/app"
+YTDL_OPTIONS_FILE = "ytdl_config_android.json"
+LOGLEVEL = "INFO"

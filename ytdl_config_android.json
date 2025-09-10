@@ -4,8 +4,8 @@
       "player_client": ["android"]
     }
   },
-  "format": "worst[height<=360]/worst",
-  "merge_output_format": "mp4",
-  "retries": 5,
-  "socket_timeout": 30
+  "format": "18/22/worst",
+  "no_warnings": true,
+  "retries": 15,
+  "socket_timeout": 120
 }
