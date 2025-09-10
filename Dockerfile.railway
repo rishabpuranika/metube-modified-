@@ -1,0 +1,41 @@
+FROM node:18-alpine as builder
+
+WORKDIR /metube
+COPY ui ./
+RUN npm ci && \
+    node_modules/.bin/ng build --configuration production
+
+FROM python:3.11-alpine
+
+WORKDIR /app
+
+# Install only essential system dependencies (avoid aria2 and ffmpeg for Railway)
+RUN apk add --update curl tini && \
+    apk add --update --virtual .build-deps gcc g++ musl-dev && \
+    rm -rf /var/cache/apk/*
+
+# Install Python dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt && \
+    apk del .build-deps
+
+COPY app ./app
+COPY --from=builder /metube/dist/metube ./ui/dist/metube
+COPY ytdl_config*.json ./
+COPY cookies.txt ./
+
+ENV PORT=8081
+ENV HOST=0.0.0.0
+ENV DOWNLOAD_DIR=/tmp/downloads
+ENV STATE_DIR=/tmp
+ENV TEMP_DIR=/tmp
+ENV YTDL_OPTIONS_FILE=ytdl_config_android.json
+
+EXPOSE 8081
+
+# Create downloads directory
+RUN mkdir -p /tmp/downloads
+
+# Use tini as entrypoint for proper signal handling
+ENTRYPOINT ["/sbin/tini", "-g", "--"]
+CMD ["python3", "app/main.py"]

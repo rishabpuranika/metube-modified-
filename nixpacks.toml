@@ -1,0 +1,14 @@
+[variables]
+NIXPACKS_PYTHON_VERSION = "3.11"
+
+[phases.build]
+cmds = [
+  "cd ui && npm install && node_modules/.bin/ng build --configuration production",
+  "pip install -r requirements.txt"
+]
+
+[phases.start]
+cmd = "python3 app/main.py"
+
+[staticAssets]
+"ui/dist/metube" = "ui/dist/metube"
